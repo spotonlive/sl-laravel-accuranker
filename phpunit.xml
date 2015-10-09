@@ -12,6 +12,7 @@
         >
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="ACCURANKER_TOKEN=" value="Token demo"/>
     </php>
 
     <testsuites>
