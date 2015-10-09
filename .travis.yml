@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+
+before_script:
+  - composer self-update
+  - composer install --prefer-source
+
+notifications:
+  slack:
+    rooms:
+      secure: "u+aMDpxPKqu2K+OAJ3zF2ii6HHNUQ/wJWfWxr+Krn6bphON18wCMFyaFSIL3rgVimmuVi5z89+nfGVkk0boZZawNBumB7NWwr3hw9pEFDUMWCGRcQV4dHIDSCQkvBjVHL84vAk/fJf5iu1wX+wdKUjfDVdOFD4jZdSC9Y+UeGcAVZYcOeg4Bg2ZTShxqt2Sf7rvTsz7pauBXmQ5q0V1MssoHTePHEgcxQa2cS6JsLZvs+ENA8vM2x1+Rx6wGBssDbuwQc24e83CKmMD77X1SOnEKOpY1o2F1W2pGU3dEe8TpgItpKX1Ti1UVe532fiFH7orZGrsxeEEkLi0mSbFFM9VZFrtnOnz3CuuemnlCqQSaSWkvYa2sz6x2j0LFV2sdD7u6DyAYprEfFcmRrwD6VB+lXM7QQjqKbh0VZEqlhFrd+YISpcLR20bdvQ+cu2wtvw9Zl93adNOykjgxXVjuKhbXGOiwpkKKo8AA+i3imr7zA7r3otm3b59EOEgNad442SrH+IwKlqfSJeQT5ryfofIHYPbTA+08JjQi4aeJ2fS7dDgadjZ8PCMOicW+LOHhdc28fTB/QyjEiYHqInLI3A9jNiX9OLXVbRJgI+W2yDjPquPPAk0pVbTieKXwFnExG/7KulNAUyme93WpZqFDeMypGKdO3JzDqZwIkDqOAf4="
+
+script:
+  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
+  - ./vendor/bin/phpcs --standard=PSR2 ./src/ ./tests/ -n
+  - ./vendor/bin/test-reporter --stdout > codeclimate.json
+  - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v1.0.1-dev)' https://codeclimate.com/test_reports"

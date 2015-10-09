@@ -1,0 +1,33 @@
+{
+  "name": "spotonlive/sl-laravel-accuranker",
+  "type": "library",
+  "description": "AccuRanker package for Laravel 5.1",
+  "keywords": [
+    "accuranker",
+    "laravel"
+  ],
+  "homepage": "https://github.com/spotonlive/sl-laravel-accuranker",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nikolaj Petersen",
+      "email": "nikolaj.lovenhardt@gmail.com",
+      "homepage": "http://spotonmarketing.dk"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0",
+    "laravel/framework": "~5.1",
+    "codeclimate/php-test-reporter": "dev-master",
+    "phpmd/phpmd" : "1.4.*",
+    "squizlabs/php_codesniffer" : "1.5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "SpotOnLive\\AccuRanker\\": "src/SpotOnLive/AccuRanker/"
+    }
+  }
+}
