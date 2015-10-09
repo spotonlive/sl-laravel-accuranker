@@ -72,6 +72,45 @@ class AccuRankerService implements AccuRankerServiceInterface
     }
 
     /**
+     * List keyword history
+     *
+     * @param string $keywordId
+     * @return Keyword
+     */
+    public function listKeywordHistory($keywordId)
+    {
+        $result = $this->api('keywords/' . $keywordId . '/');
+
+        $keyword = new Keyword();
+
+        $keyword->setId($result['id']);
+        $keyword->setDomain($result['domain']);
+        $keyword->setKeyword($result['keyword']);
+        $keyword->setLocation($result['location']);
+        $keyword->setSearchEngine($result['search_engine']);
+        $keyword->setIgnoreLocalResults($result['ignore_local_results']);
+        $keyword->setIgnoreVideoResults($result['ignore_video_results']);
+        $keyword->setCreatedAt(\DateTime::createFromFormat('Y-m-d His', $result['created_at'] . ' 00000'));
+        $keyword->setSearchLocale($result['search_locale']);
+        $keyword->setStarred($result['starred']);
+        $keyword->setTags($result['tags']);
+        $keyword->setSearchVolume($result['search_volume']);
+
+        foreach ($result['history'] as $historyResult) {
+            $rank = new Rank();
+            $rank->setSearchDate(new \DateTime($historyResult['search_date']));
+            $rank->setRank($historyResult['rank']);
+            $rank->setUrl($historyResult['url']);
+            $rank->setEstTraffic($historyResult['est_traffic']);
+            $rank->setExtraRanks($historyResult['extra_ranks']);
+
+            $keyword->addHistory($rank);
+        }
+
+        return $keyword;
+    }
+
+    /**
      * Call API
      *
      * @param string $url

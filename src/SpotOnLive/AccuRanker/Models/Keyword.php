@@ -43,6 +43,14 @@ class Keyword
     /** @var Rank */
     protected $rank;
 
+    /** @var Rank[]|array */
+    protected $history;
+
+    public function __construct()
+    {
+        $this->history = [];
+    }
+
     /**
      * @return int
      */
@@ -249,5 +257,31 @@ class Keyword
     public function setRank($rank)
     {
         $this->rank = $rank;
+    }
+
+    /**
+     * @return array|Rank[]
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param array|Rank[] $history
+     */
+    public function setHistory($history)
+    {
+        $this->history = $history;
+    }
+
+    /**
+     * Add rank
+     *
+     * @param Rank $rank
+     */
+    public function addHistory(Rank $rank)
+    {
+        $this->history[] = $rank;
     }
 }
