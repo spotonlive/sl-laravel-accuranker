@@ -8,8 +8,8 @@ interface CurlServiceInterface
      * Curl
      *
      * @param string $url
-     * @param string $credentials
+     * @param string $token
      * @return string
      */
-    public function curl($url, $credentials);
+    public function curl($url, $token);
 }
