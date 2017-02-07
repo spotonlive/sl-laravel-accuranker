@@ -22,9 +22,6 @@ class Keyword
     /** @var boolean */
     protected $ignoreLocalResults;
 
-    /** @var boolean */
-    protected $ignoreVideoResults;
-
     /** @var \DateTime */
     protected $createdAt;
 
@@ -145,22 +142,6 @@ class Keyword
     public function setIgnoreLocalResults($ignoreLocalResults)
     {
         $this->ignoreLocalResults = $ignoreLocalResults;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isIgnoreVideoResults()
-    {
-        return $this->ignoreVideoResults;
-    }
-
-    /**
-     * @param boolean $ignoreVideoResults
-     */
-    public function setIgnoreVideoResults($ignoreVideoResults)
-    {
-        $this->ignoreVideoResults = $ignoreVideoResults;
     }
 
     /**

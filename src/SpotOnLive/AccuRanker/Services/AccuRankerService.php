@@ -48,7 +48,6 @@ class AccuRankerService implements AccuRankerServiceInterface
             $keyword->setLocation($result['location']);
             $keyword->setSearchEngine($result['search_engine']);
             $keyword->setIgnoreLocalResults($result['ignore_local_results']);
-            $keyword->setIgnoreVideoResults($result['ignore_video_results']);
             $keyword->setCreatedAt(\DateTime::createFromFormat('Y-m-d His', $result['created_at'] . ' 00000'));
             $keyword->setSearchLocale($result['search_locale']);
             $keyword->setStarred($result['starred']);
@@ -89,7 +88,6 @@ class AccuRankerService implements AccuRankerServiceInterface
         $keyword->setLocation($result['location']);
         $keyword->setSearchEngine($result['search_engine']);
         $keyword->setIgnoreLocalResults($result['ignore_local_results']);
-        $keyword->setIgnoreVideoResults($result['ignore_video_results']);
         $keyword->setCreatedAt(\DateTime::createFromFormat('Y-m-d His', $result['created_at'] . ' 00000'));
         $keyword->setSearchLocale($result['search_locale']);
         $keyword->setStarred($result['starred']);
