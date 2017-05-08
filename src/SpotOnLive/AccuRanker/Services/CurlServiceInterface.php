@@ -5,11 +5,17 @@ namespace SpotOnLive\AccuRanker\Services;
 interface CurlServiceInterface
 {
     /**
-     * Curl
-     *
      * @param string $url
      * @param string $token
      * @return string
      */
-    public function curl($url, $token);
+    public function get($url, $token);
+
+    /**
+     * @param $url
+     * @param $token
+     * @param $body
+     * @return string
+     */
+    public function post($url, $token, $body);
 }

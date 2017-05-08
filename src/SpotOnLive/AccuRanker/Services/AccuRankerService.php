@@ -36,35 +36,12 @@ class AccuRankerService implements AccuRankerServiceInterface
      */
     public function listKeywordsForDomain($domainId)
     {
-        $results = $this->api('domains/' . $domainId . '/keywords/');
+        $results = $this->get('domains/' . $domainId . '/keywords/');
+        // init keywords with empty array
         $keywords = [];
 
         foreach ($results as $result) {
-            // Keyword
-            $keyword = new Keyword();
-            $keyword->setId($result['id']);
-            $keyword->setDomain($result['domain']);
-            $keyword->setKeyword($result['keyword']);
-            $keyword->setLocation($result['location']);
-            $keyword->setSearchEngine($result['search_engine']);
-            $keyword->setIgnoreLocalResults($result['ignore_local_results']);
-            $keyword->setCreatedAt(\DateTime::createFromFormat('Y-m-d His', $result['created_at'] . ' 00000'));
-            $keyword->setSearchLocale($result['search_locale']);
-            $keyword->setStarred($result['starred']);
-            $keyword->setTags($result['tags']);
-            $keyword->setSearchVolume($result['search_volume']);
-
-            // Rank
-            $rank = new Rank();
-            $rank->setSearchDate(new \DateTime($result['rank']['search_date']));
-            $rank->setRank($result['rank']['rank']);
-            $rank->setUrl($result['rank']['url']);
-            $rank->setEstTraffic($result['rank']['est_traffic']);
-            $rank->setExtraRanks($result['rank']['extra_ranks']);
-
-            $keyword->setRank($rank);
-
-            $keywords[] = $keyword;
+            $keywords[] = $this->convertResponseToKeyword($result);
         }
 
         return $keywords;
@@ -78,49 +55,115 @@ class AccuRankerService implements AccuRankerServiceInterface
      */
     public function listKeywordHistory($keywordId)
     {
-        $result = $this->api('keywords/' . $keywordId . '/');
+        $response = $this->get('keywords/' . $keywordId . '/');
 
+        return $this->convertResponseToKeyword($response);
+    }
+
+    /**
+     * Convert response to keyword model
+     *
+     * @param array $response
+     * @return Keyword
+     */
+    private function convertResponseToKeyword(array $response)
+    {
         $keyword = new Keyword();
 
-        $keyword->setId($result['id']);
-        $keyword->setDomain($result['domain']);
-        $keyword->setKeyword($result['keyword']);
-        $keyword->setLocation($result['location']);
-        $keyword->setSearchEngine($result['search_engine']);
-        $keyword->setIgnoreLocalResults($result['ignore_local_results']);
-        $keyword->setCreatedAt(\DateTime::createFromFormat('Y-m-d His', $result['created_at'] . ' 00000'));
-        $keyword->setSearchLocale($result['search_locale']);
-        $keyword->setStarred($result['starred']);
-        $keyword->setTags($result['tags']);
-        $keyword->setSearchVolume($result['search_volume']);
+        $keyword->setId($response['id']);
+        $keyword->setDomain($response['domain']);
+        $keyword->setKeyword($response['keyword']);
+        $keyword->setLocation($response['location']);
+        $keyword->setSearchEngine($response['search_engine']);
+        $keyword->setIgnoreLocalResults($response['ignore_local_results']);
+        $keyword->setCreatedAt(DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'));
+        $keyword->setSearchLocale($response['search_locale']);
+        $keyword->setStarred($response['starred']);
+        $keyword->setTags($response['tags']);
+        $keyword->setSearchVolume($response['search_volume']);
 
-        foreach ($result['history'] as $historyResult) {
+        if (isset($response['history'])) {
+            foreach ($response['history'] as $historyResult) {
+                $rank = new Rank();
+                $rank->setSearchDate(new DateTime($historyResult['search_date']));
+                $rank->setRank($historyResult['rank']);
+                $rank->setUrl($historyResult['url']);
+                $rank->setEstTraffic($historyResult['est_traffic']);
+                $rank->setExtraRanks($historyResult['extra_ranks']);
+
+                $keyword->addHistory($rank);
+            }
+        }
+
+        if (isset($response['rank'])) {
+            // Rank
             $rank = new Rank();
-            $rank->setSearchDate(new \DateTime($historyResult['search_date']));
-            $rank->setRank($historyResult['rank']);
-            $rank->setUrl($historyResult['url']);
-            $rank->setEstTraffic($historyResult['est_traffic']);
-            $rank->setExtraRanks($historyResult['extra_ranks']);
+            $rank->setSearchDate(new DateTime($response['rank']['search_date']));
+            $rank->setRank($response['rank']['rank']);
+            $rank->setUrl($response['rank']['url']);
+            $rank->setEstTraffic($response['rank']['est_traffic']);
+            $rank->setExtraRanks($response['rank']['extra_ranks']);
 
-            $keyword->addHistory($rank);
+            $keyword->setRank($rank);
         }
 
         return $keyword;
     }
 
     /**
-     * Call API
+     * @param integer $domainId
+     * @param string $keyword
+     * @param string $searchType
+     * @param string $searchEngine
+     * @param array $optional
+     * @return Keyword
+     */
+    public function createKeywordForDomain($domainId, $keyword, $searchType, $searchEngine, $optional = [])
+    {
+        $body = array_merge([
+            'keyword' => $keyword,
+            'search_type' => $searchType,
+            'search_engine' => $searchEngine,
+        ], $optional);
+
+        $response = $this->post('domains/' . $domainId . '/keywords/', $body);
+
+        return $this->convertResponseToKeyword($response);
+    }
+
+    /**
+     * Call the CURL get service
      *
      * @param string $url
      * @return array
      * @throws InvalidAPICallException
      * @throws InvalidCredentialsException
      */
-    public function api($url)
+    public function get($url)
     {
-        $result = $this->curlService->curl(
+        $result = $this->curlService->get(
             $this->getUrl() . $url,
             $this->getToken()
+        );
+
+        return $this->parse($result);
+    }
+
+    /**
+     * Call the CURL post service
+     *
+     * @param string $url
+     * @param array $body
+     * @return array
+     * @throws InvalidAPICallException
+     * @throws InvalidCredentialsException
+     */
+    public function post($url, $body)
+    {
+        $result = $this->curlService->post(
+            $this->getUrl() . $url,
+            $this->getToken(),
+            $body
         );
 
         return $this->parse($result);
