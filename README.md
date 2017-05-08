@@ -7,31 +7,3 @@
 ## Organization & authors
 * [**spotonlive**](https://github.com/spotonlive)
 * [**nikolajpetersen**](https://github.com/Nikolajpetersen)
-
-
-## Usage
-
-required body for create
-
- "keyword": [
-    "Dette felt er påkrævet."
-  ],
-  "search_engine": [
-    "Dette felt er påkrævet."
-  ]
-
-    /**
-     * List keywords by domain
-     *
-     * @param string $id
-     * @return array
-     */
-    public function listKeywordsForDomain($id);
-
-    /**
-     * Get keyword history
-     *
-     * @param string $keywordId
-     * @return array
-     */
-    public function listKeywordHistory($keywordId);
