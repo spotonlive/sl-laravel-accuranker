@@ -12,6 +12,7 @@ namespace SpotOnLive\AccuRanker\Providers\Services;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application;
 use SpotOnLive\AccuRanker\Services\AccuRankerService;
+use SpotOnLive\AccuRanker\Services\CurlService;
 
 class AccuRankerServiceProvider extends ServiceProvider
 {
@@ -30,14 +31,14 @@ class AccuRankerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('SpotOnLive\AccuRanker\Services\AccuRankerService', function (Application $app) {
-            if (!$config = config('accuranker')) {
-                $config = [];
-            }
+        $this->app->bind(AccuRankerService::class, function (Application $app) {
+            $curlService = $app->make(CurlService::class);
 
-            $curlService = $app->make('SpotOnLive\AccuRanker\Services\CurlService');
+            return new AccuRankerService($this->getConfig(), $curlService);
+        });
 
-            return new AccuRankerService($config, $curlService);
+        $this->app->bind(CurlService::class, function (Application $app) {
+            return new CurlService($this->getConfig());
         });
 
         $this->mergeConfig();
@@ -52,5 +53,17 @@ class AccuRankerServiceProvider extends ServiceProvider
             __DIR__ . '/../../../../config/config.php',
             'accuranker'
         );
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfig()
+    {
+        if (!$config = config('accuranker')) {
+            return [];
+        }
+
+        return $config;
     }
 }
