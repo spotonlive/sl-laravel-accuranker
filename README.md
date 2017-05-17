@@ -1,4 +1,4 @@
-# AccuRanker for Laravel 5.1
+# AccuRanker for Laravel 5+
 
 **THIS PACKAGE IS UNDER DEVELOPMENT**
 
