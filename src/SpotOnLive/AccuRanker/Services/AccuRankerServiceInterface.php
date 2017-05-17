@@ -36,5 +36,4 @@ interface AccuRankerServiceInterface
      * @return mixed
      */
     public function deleteKeywordsForDomain($domainId, $id);
-
 }
