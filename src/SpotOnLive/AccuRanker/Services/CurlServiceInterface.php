@@ -18,4 +18,11 @@ interface CurlServiceInterface
      * @return string
      */
     public function post($url, $token, $body);
+
+    /**
+     * @param $url
+     * @param $token
+     * @return mixed
+     */
+    public function delete($url, $token);
 }

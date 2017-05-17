@@ -132,6 +132,18 @@ class AccuRankerService implements AccuRankerServiceInterface
     }
 
     /**
+     * @param $domainId
+     * @param $id
+     * @return null
+     */
+    public function deleteKeywordsForDomain($domainId, $id)
+    {
+        $response = $this->delete('domains/' . $domainId . '/keywords/' . $id . '/');
+
+        return null;
+    }
+
+    /**
      * Call the CURL get service
      *
      * @param string $url
@@ -164,6 +176,22 @@ class AccuRankerService implements AccuRankerServiceInterface
             $this->getUrl() . $url,
             $this->getToken(),
             $body
+        );
+
+        return $this->parse($result);
+    }
+
+    /**
+     * Call the CURL delete service
+     *
+     * @param $url
+     * @return array
+     */
+    public function delete($url)
+    {
+        $result = $this->curlService->delete(
+            $this->getUrl() . $url,
+            $this->getToken()
         );
 
         return $this->parse($result);

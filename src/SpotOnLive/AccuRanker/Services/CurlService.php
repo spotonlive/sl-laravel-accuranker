@@ -4,6 +4,7 @@ namespace SpotOnLive\AccuRanker\Services;
 
 use SpotOnLive\AccuRanker\Options\ApiOptions;
 
+
 class CurlService implements CurlServiceInterface
 {
     /** @var ApiOptions */
@@ -30,7 +31,7 @@ class CurlService implements CurlServiceInterface
 
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, $this->config->get('curl_timeout'));
+        curl_setopt($curl,CURLOPT_TIMEOUT, $this->config->get('curl_timeout'));
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Authorization:' . $token]);
 
         $result = curl_exec($curl);
@@ -52,9 +53,31 @@ class CurlService implements CurlServiceInterface
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
-        curl_setopt($curl, CURLOPT_TIMEOUT, $this->config->get('curl_timeout'));
+        curl_setopt($curl,CURLOPT_POST, 1);
+        curl_setopt($curl,CURLOPT_POSTFIELDS,$body);
+        curl_setopt($curl,CURLOPT_TIMEOUT, $this->config->get('curl_timeout'));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Authorization:' . $token]);
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
+
+        return $result;
+    }
+
+
+    /**
+     * @param $url
+     * @param $token
+     * @return mixed
+     */
+    public function delete($url, $token)
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($curl,CURLOPT_TIMEOUT, $this->config->get('curl_timeout'));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Authorization:' . $token]);
 

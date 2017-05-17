@@ -19,4 +19,22 @@ interface AccuRankerServiceInterface
      * @return array
      */
     public function listKeywordHistory($keywordId);
+
+    /**
+     * @param $domainId
+     * @param $keyword
+     * @param $searchType
+     * @param $searchEngine
+     * @param array $optional
+     * @return mixed
+     */
+    public function createKeywordForDomain($domainId, $keyword, $searchType, $searchEngine, $optional = []);
+
+    /**
+     * @param $domainId
+     * @param $id
+     * @return mixed
+     */
+    public function deleteKeywordsForDomain($domainId, $id);
+
 }
