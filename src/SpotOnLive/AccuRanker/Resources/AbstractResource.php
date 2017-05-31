@@ -6,15 +6,15 @@ use SpotOnLive\AccuRanker\AccuRanker;
 
 abstract class AbstractResource
 {
-    /** @var  AccuRanker */
-    protected $Accuranker;
+    /** @var AccuRanker */
+    protected $accuRanker;
 
     /**
      * AbstractResource constructor.
-     * @param $Accuranker
+     * @param AccuRanker $accuRanker
      */
-    public function __construct(AccuRanker $Accuranker)
+    public function __construct(AccuRanker $accuRanker)
     {
-        $this->Accuranker = $Accuranker;
+        $this->accuRanker = $accuRanker;
     }
 }

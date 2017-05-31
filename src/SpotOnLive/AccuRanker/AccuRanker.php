@@ -28,7 +28,7 @@ use SpotOnLive\AccuRanker\Resources\Keywords;
 class AccuRanker
 {
     const ACCURANKER_API_VERSION = 'v3';
-    const ACCURANKER_BASE_URL = 'https://app.accuranker.com/api/'.self::ACCURANKER_API_VERSION.'/';
+    const ACCURANKER_BASE_URL = 'https://app.accuranker.com/api/' . self::ACCURANKER_API_VERSION . '/';
 
     /** @var  CurlServiceInterface */
     private $curlService;
@@ -146,10 +146,10 @@ class AccuRanker
     protected function getToken()
     {
         /** @var string|null $token */
-        $token = env('ACCURANKER_TOKEN', null);
+        $token = $this->getConfig()->get('accuranker_token');
 
         if (is_null($token)) {
-            throw new InvalidCredentialsException('Please insert your accuranker token in the .env file');
+            throw new InvalidCredentialsException('Please insert your accuranker token in the config file');
         }
 
         return $token;

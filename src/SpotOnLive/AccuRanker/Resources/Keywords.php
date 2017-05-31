@@ -5,8 +5,9 @@ namespace SpotOnLive\AccuRanker\Resources;
 use DateTime;
 use SpotOnLive\AccuRanker\Models\Keyword;
 use SpotOnLive\AccuRanker\Models\Rank;
+use SpotOnLive\AccuRanker\Resources\Contracts\KeywordsInterface;
 
-class Keywords extends AbstractResource
+class Keywords extends AbstractResource implements KeywordsInterface
 {
     /**
      * List keywords for domain
@@ -16,7 +17,7 @@ class Keywords extends AbstractResource
      */
     public function listKeywordsForDomain($domainId)
     {
-        $results = $this->Accuranker->get('domains/' . $domainId . '/keywords/');
+        $results = $this->accuRanker->get('domains/' . $domainId . '/keywords/');
         // init keywords with empty array
         $keywords = [];
 
@@ -35,7 +36,7 @@ class Keywords extends AbstractResource
      */
     public function listKeywordHistory($keywordId)
     {
-        $response = $this->Accuranker->get('keywords/' . $keywordId . '/');
+        $response = $this->accuRanker->get('keywords/' . $keywordId . '/');
 
         return $this->convertResponseToKeyword($response);
     }
@@ -106,7 +107,7 @@ class Keywords extends AbstractResource
             'search_engine' => $searchEngine,
         ], $optional);
 
-        $response = $this->Accuranker->post('domains/' . $domainId . '/keywords/', $body);
+        $response = $this->accuRanker->post('domains/' . $domainId . '/keywords/', $body);
 
         return $this->convertResponseToKeyword($response);
     }
@@ -118,8 +119,6 @@ class Keywords extends AbstractResource
      */
     public function deleteKeywordsForDomain($domainId, $id)
     {
-        $response = $this->Accuranker->delete('domains/' . $domainId . '/keywords/' . $id . '/');
-
-        return null;
+        return $this->accuRanker->delete('domains/' . $domainId . '/keywords/' . $id . '/');
     }
 }

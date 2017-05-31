@@ -2,6 +2,7 @@
 
 namespace SpotOnLive\AccuRanker\Resources;
 
+use JamesHalsall\Hydrator\ObjectConstructorFromArrayHydrator;
 use SpotOnLive\AccuRanker\Exceptions\DomainNotUniqueException;
 use SpotOnLive\AccuRanker\Models\Domain as DomainModel;
 
@@ -14,11 +15,8 @@ class Domain extends AbstractResource
      */
     public function listDomains()
     {
-        $results = $this->Accuranker->get('domains/');
-
-        return $results;
+        return $this->accuRanker->get('domains/');
     }
-
 
     /**
      * @param $name
@@ -40,32 +38,24 @@ class Domain extends AbstractResource
             'display_name' => $displayName
         ], $optional);
 
-        $response = $this->Accuranker->post('domains/', $body);
+        $response = $this->accuRanker->post('domains/', $body);
 
         if (isset($response['non_field_errors'])) {
-            throw new DomainNotUniqueException($response['non_field_errors'][0]);
+            throw new DomainNotUniqueException(implode(",", $response['non_field_errors']));
         }
+
         return $this->convertResponseToDomain($response);
     }
 
+    /**
+     * @param array $response
+     * @return \SpotOnLive\AccuRanker\Models\Domain
+     */
     private function convertResponseToDomain(array $response)
     {
-        $domain = new DomainModel();
-        $domain->setGroupId($response['group']);
-        $domain->setDateOfFirstRank($response['date_of_first_rank']);
-        $domain->setDefaultSearchLocale($response['default_search_locale']);
-        $domain->setDisplayName($response['display_name']);
-        $domain->setIncludeSubdomains($response['include_subdomains']);
-        $domain->setName($response['name']);
-        $domain->setTags($response['tags']);
-        $domain->setCompetitors($response['competitors']);
-        $domain->setScreenshotUrl($response['screenshot_url']);
-        $domain->setCreatedAt($response['created_at']);
-        $domain->setFaviconUrl($response['favicon_url']);
-        $domain->setPaused($response['paused']);
-        $domain->setPublicReportUrl($response['public_report_url']);
-        $domain->setSlug($response['slug']);
+        $hydrator = new ObjectConstructorFromArrayHydrator();
+        $response['group_id'] = $response['group'];
 
-        return $domain;
+        return $hydrator->hydrate(DomainModel::class, $response);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 return [
-    // API Url
-    // 'api_url' => 'https://app.accuranker.com/api/v3/',
+    // AccuRanker access token
+    'accuranker_token' => '',
 
     // Curl timeout
     'curl_timeout' => 60,
