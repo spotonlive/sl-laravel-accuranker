@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AccuRanker package for Laravel 5.1
+ * AccuRanker package for Laravel 5+
  *
  * @license MIT
  * @package SpotOnLive\AccuRanker
@@ -11,6 +11,7 @@ namespace SpotOnLive\AccuRanker\Providers\Services;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application;
+use SpotOnLive\AccuRanker\AccuRanker;
 use SpotOnLive\AccuRanker\Services\AccuRankerService;
 use SpotOnLive\AccuRanker\Services\CurlService;
 
@@ -31,10 +32,10 @@ class AccuRankerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(AccuRankerService::class, function (Application $app) {
+        $this->app->bind(AccuRanker::class, function (Application $app) {
             $curlService = $app->make(CurlService::class);
 
-            return new AccuRankerService($this->getConfig(), $curlService);
+            return new AccuRanker($this->getConfig(), $curlService);
         });
 
         $this->app->bind(CurlService::class, function (Application $app) {

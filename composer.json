@@ -1,7 +1,7 @@
 {
   "name": "spotonlive/sl-laravel-accuranker",
   "type": "library",
-  "description": "AccuRanker package for Laravel 5.1",
+  "description": "AccuRanker package for Laravel 5+",
   "keywords": [
     "accuranker",
     "laravel"
@@ -12,6 +12,11 @@
     {
       "name": "Nikolaj Petersen",
       "email": "nikolaj.lovenhardt@gmail.com",
+      "homepage": "http://spotonmarketing.dk"
+    },
+    {
+      "name": "Jason Kelly",
+      "email": "jason-kelly@live.dk",
       "homepage": "http://spotonmarketing.dk"
     }
   ],

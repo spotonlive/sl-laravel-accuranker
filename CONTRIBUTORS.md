@@ -32,3 +32,5 @@
 # Please keep the list sorted.
 
 Nikolaj Løvenhardt Petersen <nikolaj.lovenhardt@gmail.com>
+
+Jason Kelly <jason-kelly@live.dk>
