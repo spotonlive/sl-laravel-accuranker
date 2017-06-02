@@ -2,8 +2,13 @@
 
 namespace SpotOnLive\AccuRanker\Models;
 
+use DateTime;
+
 class Domain
 {
+    /** @var integer */
+    protected $id;
+
     /** @var  integer */
     protected $groupId;
 
@@ -19,10 +24,7 @@ class Domain
     /** @var   integer */
     protected $defaultSearchLocale;
 
-    /** @var   \DateTime */
-    protected $dateOfFirstRank;
-
-    /** @var  \DateTime */
+    /** @var  DateTime */
     protected $createdAt;
 
     /** @var  int */
@@ -48,6 +50,80 @@ class Domain
 
     /** @var  array */
     protected $tags;
+
+    /** @var   DateTime|null */
+    protected $dateOfFirstRank;
+
+    /**
+     * Domain constructor.
+     * @param int $id
+     * @param int $groupId
+     * @param string $name
+     * @param string $display_name
+     * @param bool $includeSubdomains
+     * @param int $defaultSearchLocale
+     * @param DateTime|string $createdAt
+     * @param int $type
+     * @param string $publicReportUrl
+     * @param string $slug
+     * @param bool $paused
+     * @param array $competitors
+     * @param string $faviconUrl
+     * @param string $screenshotUrl
+     * @param array $tags
+     * @param DateTime $dateOfFirstRank
+     */
+    public function __construct(
+        $id,
+        $groupId,
+        $name,
+        $display_name,
+        $includeSubdomains,
+        $defaultSearchLocale,
+        $createdAt,
+        $type,
+        $publicReportUrl,
+        $slug,
+        $paused,
+        array $competitors,
+        $faviconUrl,
+        $screenshotUrl,
+        array $tags,
+        DateTime $dateOfFirstRank = null
+    ) {
+        $this->id = $id;
+        $this->groupId = $groupId;
+        $this->name = $name;
+        $this->display_name = $display_name;
+        $this->includeSubdomains = $includeSubdomains;
+        $this->defaultSearchLocale = $defaultSearchLocale;
+        $this->dateOfFirstRank = $dateOfFirstRank;
+        $this->createdAt = ($createdAt instanceof DateTime) ? $createdAt : new DateTime($createdAt);
+        $this->type = $type;
+        $this->publicReportUrl = $publicReportUrl;
+        $this->slug = $slug;
+        $this->paused = $paused;
+        $this->competitors = $competitors;
+        $this->faviconUrl = $faviconUrl;
+        $this->screenshotUrl = $screenshotUrl;
+        $this->tags = $tags;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return int
@@ -130,33 +206,33 @@ class Domain
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getDateOfFirstRank(): \DateTime
+    public function getDateOfFirstRank()
     {
         return $this->dateOfFirstRank;
     }
 
     /**
-     * @param \DateTime $dateOfFirstRank
+     * @param DateTime|null $dateOfFirstRank
      */
-    public function setDateOfFirstRank(\DateTime $dateOfFirstRank)
+    public function setDateOfFirstRank(DateTime $dateOfFirstRank = null)
     {
         $this->dateOfFirstRank = $dateOfFirstRank;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
     }

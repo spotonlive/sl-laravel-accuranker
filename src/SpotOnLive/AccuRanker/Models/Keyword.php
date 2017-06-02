@@ -2,6 +2,8 @@
 
 namespace SpotOnLive\AccuRanker\Models;
 
+use DateTime;
+
 class Keyword
 {
     /** @var integer */
@@ -22,7 +24,7 @@ class Keyword
     /** @var boolean */
     protected $ignoreLocalResults;
 
-    /** @var \DateTime */
+    /** @var DateTime */
     protected $createdAt;
 
     /** @var integer */
@@ -37,15 +39,56 @@ class Keyword
     /** @var integer */
     protected $searchVolume;
 
-    /** @var Rank */
+    /** @var Rank|null */
     protected $rank;
 
     /** @var Rank[]|array */
     protected $history;
 
-    public function __construct()
-    {
-        $this->history = [];
+    /**
+     * Keyword constructor.
+     * @param int $id
+     * @param int $domain
+     * @param string $keyword
+     * @param string $location
+     * @param int $searchEngine
+     * @param bool $ignoreLocalResults
+     * @param $createdAt
+     * @param int $searchLocale
+     * @param bool $starred
+     * @param array $tags
+     * @param int $searchVolume
+     * @param Rank|null $rank
+     * @param array|Rank[] $history
+     */
+    public function __construct(
+        $id,
+        $domain,
+        $keyword,
+        $location,
+        $searchEngine,
+        $ignoreLocalResults,
+        $createdAt,
+        $searchLocale,
+        $starred,
+        array $tags,
+        $searchVolume,
+        Rank $rank = null,
+        array $history = []
+    ) {
+        $this->id = $id;
+        $this->domain = $domain;
+        $this->keyword = $keyword;
+        $this->location = $location;
+        $this->searchEngine = $searchEngine;
+        $this->ignoreLocalResults = $ignoreLocalResults;
+        $this->createdAt = ($createdAt instanceof DateTime) ? $createdAt : new DateTime($createdAt);
+        $this->searchLocale = $searchLocale;
+        $this->starred = $starred;
+        $this->tags = $tags;
+        $this->searchVolume = $searchVolume;
+        $this->rank = $rank;
+        $this->history = $history;
     }
 
     /**
@@ -145,7 +188,7 @@ class Keyword
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -153,7 +196,7 @@ class Keyword
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
     public function setCreatedAt($createdAt)
     {

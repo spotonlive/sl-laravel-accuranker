@@ -3,6 +3,7 @@
 namespace SpotOnLive\AccuRanker\Resources;
 
 use DateTime;
+use JamesHalsall\Hydrator\ObjectConstructorFromArrayHydrator;
 use SpotOnLive\AccuRanker\Models\Keyword;
 use SpotOnLive\AccuRanker\Models\Rank;
 use SpotOnLive\AccuRanker\Resources\Contracts\KeywordsInterface;
@@ -49,42 +50,33 @@ class Keywords extends AbstractResource implements KeywordsInterface
      */
     private function convertResponseToKeyword(array $response)
     {
-        $keyword = new Keyword();
+        $hydrator = new ObjectConstructorFromArrayHydrator();
 
-        $keyword->setId($response['id']);
-        $keyword->setDomain($response['domain']);
-        $keyword->setKeyword($response['keyword']);
-        $keyword->setLocation($response['location']);
-        $keyword->setSearchEngine($response['search_engine']);
-        $keyword->setIgnoreLocalResults($response['ignore_local_results']);
-        $keyword->setCreatedAt(DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'));
-        $keyword->setSearchLocale($response['search_locale']);
-        $keyword->setStarred($response['starred']);
-        $keyword->setTags($response['tags']);
-        $keyword->setSearchVolume($response['search_volume']);
+        // History
+        $history = [];
 
         if (isset($response['history'])) {
-            foreach ($response['history'] as $historyResult) {
-                $rank = new Rank();
-                $rank->setSearchDate(new DateTime($historyResult['search_date']));
-                $rank->setRank($historyResult['rank']);
-                $rank->setUrl($historyResult['url']);
-                $rank->setEstTraffic($historyResult['est_traffic']);
-                $rank->setExtraRanks($historyResult['extra_ranks']);
-
-                $keyword->addHistory($rank);
-            }
+            $history = $response['history'];
         }
 
-        if (isset($response['rank'])) {
-            // Rank
-            $rank = new Rank();
-            $rank->setSearchDate(new DateTime($response['rank']['search_date']));
-            $rank->setRank($response['rank']['rank']);
-            $rank->setUrl($response['rank']['url']);
-            $rank->setEstTraffic($response['rank']['est_traffic']);
-            $rank->setExtraRanks($response['rank']['extra_ranks']);
+        // Rank
+        $rank = null;
 
+        if (isset($response['rank'])) {
+            $rank = $response['rank'];
+        }
+
+        $response['rank'] = null;
+
+        $keyword = $hydrator->hydrate(Keyword::class, $response);
+
+        foreach ($history as $historyResult) {
+            $rank = $hydrator->hydrate(Rank::class, $historyResult);
+            $keyword->addHistory($rank);
+        }
+
+        if ($rank) {
+            $rank = $hydrator->hydrate(Rank::class, $rank);
             $keyword->setRank($rank);
         }
 
