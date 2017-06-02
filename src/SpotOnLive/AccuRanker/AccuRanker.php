@@ -146,7 +146,7 @@ class AccuRanker
     protected function getToken()
     {
         /** @var string|null $token */
-        $token = $this->getConfig()->get('accuranker_token');
+        $token = $this->getConfig()->get('api_key');
 
         if (is_null($token)) {
             throw new InvalidCredentialsException('Please insert your accuranker token in the config file');

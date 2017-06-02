@@ -2,7 +2,7 @@
 
 return [
     // AccuRanker access token
-    'accuranker_token' => '',
+    'api_key' => '',
 
     // Curl timeout
     'curl_timeout' => 60,

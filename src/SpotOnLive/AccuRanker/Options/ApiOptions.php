@@ -4,9 +4,9 @@ namespace SpotOnLive\AccuRanker\Options;
 
 class ApiOptions extends Options implements OptionsInterface
 {
-    /** @var array */
+    /** @var String array */
     protected $defaults = [
-        'accuranker_token' => '',
+        'api_key' => '',
         'curl_timeout' => 60,
     ];
 }

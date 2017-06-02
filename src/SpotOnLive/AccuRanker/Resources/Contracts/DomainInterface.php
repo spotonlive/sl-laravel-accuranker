@@ -12,11 +12,11 @@ interface DomainInterface
     public function listDomains();
 
     /**
-     * @param $name
-     * @param $groupId
-     * @param $searchLocal
-     * @param $includeSubdomains
-     * @param $displayName
+     * @param string $name
+     * @param int $groupId
+     * @param int $searchLocal
+     * @param boolean $includeSubdomains
+     * @param string $displayName
      * @param array $optional
      * @return Domain
      */
