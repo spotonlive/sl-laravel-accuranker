@@ -6,4 +6,5 @@
 
 ## Organization & authors
 * [**spotonlive**](https://github.com/spotonlive)
+* [**jasonkellydk**](https://github.com/jasonkellydk)
 * [**nikolajpetersen**](https://github.com/Nikolajpetersen)

@@ -2,9 +2,11 @@
 
 namespace SpotOnLive\AccuRanker\Models;
 
+use DateTime;
+
 class Rank
 {
-    /** @var \DateTime */
+    /** @var DateTime */
     protected $searchDate;
 
     /** @var integer */
@@ -20,7 +22,24 @@ class Rank
     protected $extraRanks;
 
     /**
-     * @return \DateTime
+     * Rank constructor.
+     * @param DateTime|string $searchDate
+     * @param int $rank
+     * @param string $url
+     * @param int $estTraffic
+     * @param string $extraRanks
+     */
+    public function __construct($searchDate, $rank, $url, $estTraffic, $extraRanks)
+    {
+        $this->searchDate = ($searchDate instanceof DateTime) ? $searchDate : new DateTime($searchDate);
+        $this->rank = $rank;
+        $this->url = $url;
+        $this->estTraffic = $estTraffic;
+        $this->extraRanks = $extraRanks;
+    }
+
+    /**
+     * @return DateTime
      */
     public function getSearchDate()
     {
@@ -28,7 +47,7 @@ class Rank
     }
 
     /**
-     * @param \DateTime $searchDate
+     * @param DateTime $searchDate
      */
     public function setSearchDate($searchDate)
     {

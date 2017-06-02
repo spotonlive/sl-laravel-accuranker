@@ -1,8 +1,8 @@
 <?php
 
-namespace SpotOnLive\AccuRanker\Services;
+namespace SpotOnLive\AccuRanker\Resources\Contracts;
 
-interface AccuRankerServiceInterface
+interface KeywordsInterface
 {
     /**
      * List keywords by domain
@@ -26,14 +26,14 @@ interface AccuRankerServiceInterface
      * @param $searchType
      * @param $searchEngine
      * @param array $optional
-     * @return mixed
+     * @return array
      */
     public function createKeywordForDomain($domainId, $keyword, $searchType, $searchEngine, $optional = []);
 
     /**
      * @param $domainId
      * @param $id
-     * @return mixed
+     * @return array
      */
     public function deleteKeywordsForDomain($domainId, $id);
 }

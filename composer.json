@@ -1,7 +1,7 @@
 {
   "name": "spotonlive/sl-laravel-accuranker",
   "type": "library",
-  "description": "AccuRanker package for Laravel 5.1",
+  "description": "AccuRanker package for Laravel 5+",
   "keywords": [
     "accuranker",
     "laravel"
@@ -10,13 +10,19 @@
   "license": "MIT",
   "authors": [
     {
+      "name": "Jason Kelly",
+      "email": "jason-kelly@live.dk",
+      "homepage": "http://spotonmarketing.dk"
+    },
+    {
       "name": "Nikolaj Petersen",
       "email": "nikolaj.lovenhardt@gmail.com",
       "homepage": "http://spotonmarketing.dk"
     }
   ],
   "require": {
-    "php": ">=5.4.0"
+    "php": ">=5.4.0",
+    "jameshalsall/object-hydrator": "^1.2"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",
