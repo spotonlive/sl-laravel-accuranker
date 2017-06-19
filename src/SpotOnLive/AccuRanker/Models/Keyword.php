@@ -71,7 +71,7 @@ class Keyword
         $createdAt,
         $searchLocale,
         $starred,
-        array $tags,
+        array $tags = [],
         $searchVolume,
         Rank $rank = null,
         array $history = []
@@ -85,7 +85,7 @@ class Keyword
         $this->createdAt = ($createdAt instanceof DateTime) ? $createdAt : new DateTime($createdAt);
         $this->searchLocale = $searchLocale;
         $this->starred = $starred;
-        $this->tags = $tags;
+        $this->tags = (is_array($tags)) ? $tags : [];
         $this->searchVolume = $searchVolume;
         $this->rank = $rank;
         $this->history = $history;

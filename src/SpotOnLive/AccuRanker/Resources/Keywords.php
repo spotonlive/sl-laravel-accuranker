@@ -76,7 +76,6 @@ class Keywords extends AbstractResource implements KeywordsInterface
         }
 
         if ($rank) {
-            $rank = $hydrator->hydrate(Rank::class, $rank);
             $keyword->setRank($rank);
         }
 
