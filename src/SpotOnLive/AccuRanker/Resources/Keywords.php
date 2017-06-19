@@ -63,20 +63,17 @@ class Keywords extends AbstractResource implements KeywordsInterface
         $rank = null;
 
         if (isset($response['rank'])) {
-            $rank = $response['rank'];
+            $rank = $hydrator->hydrate(Rank::class, $response['rank']);
         }
 
         $response['rank'] = null;
 
+        // Keyword
         $keyword = $hydrator->hydrate(Keyword::class, $response);
+        $keyword->setRank($rank);
 
         foreach ($history as $historyResult) {
-            $rank = $hydrator->hydrate(Rank::class, $historyResult);
-            $keyword->addHistory($rank);
-        }
-
-        if ($rank) {
-            $keyword->setRank($rank);
+            $keyword->addHistory($hydrator->hydrate(Rank::class, $historyResult));
         }
 
         return $keyword;
