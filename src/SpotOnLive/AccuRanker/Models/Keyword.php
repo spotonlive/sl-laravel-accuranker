@@ -71,7 +71,7 @@ class Keyword
         $createdAt,
         $searchLocale,
         $starred,
-        array $tags = [],
+        array $tags = null,
         $searchVolume,
         Rank $rank = null,
         array $history = []
