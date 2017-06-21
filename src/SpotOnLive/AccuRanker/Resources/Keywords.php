@@ -63,7 +63,7 @@ class Keywords extends AbstractResource implements KeywordsInterface
             $response['starred'],
             $response['tags'],
             $response['search_volume'],
-            $response['tags'],
+            $response['tags']
         );
 
         foreach ($response['history'] as $historyResult) {
