@@ -61,7 +61,6 @@ class Keywords extends AbstractResource implements KeywordsInterface
             DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'),
             $response['search_locale'],
             $response['starred'],
-            $response['tags'],
             $response['search_volume'],
             $response['tags']
         );
