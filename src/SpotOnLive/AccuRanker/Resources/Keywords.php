@@ -42,6 +42,7 @@ class Keywords extends AbstractResource implements KeywordsInterface
         return $this->convertResponseToKeyword($response);
     }
 
+    
     /**
      * Convert response to keyword model
      *
@@ -50,34 +51,31 @@ class Keywords extends AbstractResource implements KeywordsInterface
      */
     private function convertResponseToKeyword(array $response)
     {
-        if (empty($response) || !count($response)) {
-            return null;
-        }
+        $keyword = new Keyword(
+            $response['id'],
+            $response['domain'],
+            $response['keyword'],
+            $response['location'],
+            $response['search_engine'],
+            $response['ignore_local_results'],
+            DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'),
+            $response['search_locale'],
+            $response['starred'],
+            $response['tags'],
+            $response['search_volume'],
+            $response['tags'],
+        );
 
-        $hydrator = new ObjectConstructorFromArrayHydrator();
-
-        // Variables
-        $data = [
-            'history' => (isset($response['history'])) ? $response['history'] : null,
-            'rank' => (isset($response['rank'])) ? $response['history'] : null,
-        ];
-
-        unset($response['history']);
-        unset($response['rank']);
-
-        /** @var Keyword $keyword */
-        $keyword = $hydrator->hydrate(Keyword::class, $response);
-
-        // Rank
-
-        if (!empty($data['rank'])) {
-            $keyword->setRank($hydrator->hydrate(Keyword::class, $data['rank']));
-        }
-
-        if (!empty($data['history']) && count($data['history'])) {
-            foreach ($data['history'] as $rank) {
-                $keyword->addHistory($hydrator->hydrate(Rank::class, $rank));
-            }
+        foreach ($response['history'] as $historyResult) {
+            $rank = new Rank(
+                new DateTime($historyResult['search_date']),
+                $historyResult['rank'],
+                $historyResult['url'],
+                $historyResult['est_traffic'],
+                $historyResult['extra_ranks']
+            );
+            
+            $keyword->addHistory($rank);
         }
 
         return $keyword;
