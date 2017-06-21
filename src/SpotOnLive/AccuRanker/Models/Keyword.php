@@ -45,6 +45,7 @@ class Keyword
     /** @var Rank[]|array */
     protected $history;
 
+    
     /**
      * Keyword constructor.
      * @param int $id
@@ -56,8 +57,8 @@ class Keyword
      * @param $createdAt
      * @param int $searchLocale
      * @param bool $starred
-     * @param array $tags
      * @param int $searchVolume
+     * @param array $tags
      * @param Rank|null $rank
      * @param array|Rank[] $history
      */
@@ -71,8 +72,8 @@ class Keyword
         $createdAt,
         $searchLocale,
         $starred,
-        array $tags = null,
         $searchVolume,
+        array $tags = null,
         Rank $rank = null,
         array $history = []
     ) {
