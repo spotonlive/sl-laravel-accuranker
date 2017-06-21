@@ -42,6 +42,7 @@ class Keywords extends AbstractResource implements KeywordsInterface
         return $this->convertResponseToKeyword($response);
     }
 
+    
     /**
      * Convert response to keyword model
      *
@@ -52,28 +53,28 @@ class Keywords extends AbstractResource implements KeywordsInterface
     {
         $hydrator = new ObjectConstructorFromArrayHydrator();
 
-        // History
-        $history = [];
+        // Variables
+        $data = [
+            'history' => (isset($response['history'])) ? $response['history'] : null,
+            'rank' => (isset($response['rank'])) ? $response['history'] : null,
+        ];
 
-        if (isset($response['history'])) {
-            $history = $response['history'];
-        }
+        unset($response['history']);
+        unset($response['rank']);
+
+        /** @var Keyword $keyword */
+        $keyword = $hydrator->hydrate(Keyword::class, $response);
 
         // Rank
-        $rank = null;
 
-        if (isset($response['rank'])) {
-            $rank = $hydrator->hydrate(Rank::class, $response['rank']);
+        if (!empty($data['rank'])) {
+            $keyword->setRank($hydrator->hydrate(Keyword::class, $data['rank']));
         }
 
-        $response['rank'] = null;
-
-        // Keyword
-        $keyword = $hydrator->hydrate(Keyword::class, $response);
-        $keyword->setRank($rank);
-
-        foreach ($history as $historyResult) {
-            $keyword->addHistory($hydrator->hydrate(Rank::class, $historyResult));
+        if (!empty($data['history']) && count($data['history'])) {
+            foreach ($data['history'] as $rank) {
+                $keyword->addHistory($hydrator->hydrate(Rank::class, $rank));
+            }
         }
 
         return $keyword;
