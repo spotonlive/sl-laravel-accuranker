@@ -42,15 +42,18 @@ class Keywords extends AbstractResource implements KeywordsInterface
         return $this->convertResponseToKeyword($response);
     }
 
-    
     /**
      * Convert response to keyword model
      *
      * @param array $response
-     * @return Keyword
+     * @return Keyword|null
      */
     private function convertResponseToKeyword(array $response)
     {
+        if (empty($response) || !count($response)) {
+            return null;
+        }
+
         $hydrator = new ObjectConstructorFromArrayHydrator();
 
         // Variables
