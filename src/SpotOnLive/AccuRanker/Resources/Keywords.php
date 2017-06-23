@@ -19,7 +19,7 @@ class Keywords extends AbstractResource implements KeywordsInterface
     public function listKeywordsForDomain($domainId)
     {
         $results = $this->accuRanker->get('domains/' . $domainId . '/keywords/');
-        // init keywords with empty array
+
         $keywords = [];
 
         foreach ($results as $result) {
@@ -75,6 +75,18 @@ class Keywords extends AbstractResource implements KeywordsInterface
             );
             
             $keyword->addHistory($rank);
+        }
+        
+        
+        // Rank
+        if (isset($result['rank']) && !empty($result['rank'])) {
+            $rank = new Rank();
+            $rank->setSearchDate(new \DateTime($result['rank']['search_date']));
+            $rank->setRank($result['rank']['rank']);
+            $rank->setUrl($result['rank']['url']);
+            $rank->setEstTraffic($result['rank']['est_traffic']);
+            $rank->setExtraRanks($result['rank']['extra_ranks']);
+            $keyword->setRank($rank);
         }
 
         return $keyword;
