@@ -81,7 +81,7 @@ class Keywords extends AbstractResource implements KeywordsInterface
         // Rank
         if (isset($result['rank']) && !empty($result['rank'])) {
             $rank = new Rank();
-            $rank->setSearchDate(new \DateTime($result['rank']['search_date']));
+            $rank->setSearchDate(new DateTime($result['rank']['search_date']));
             $rank->setRank($result['rank']['rank']);
             $rank->setUrl($result['rank']['url']);
             $rank->setEstTraffic($result['rank']['est_traffic']);
