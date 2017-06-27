@@ -48,6 +48,8 @@ class Domain extends AbstractResource
     }
 
     /**
+     * Convert response to domain
+     *
      * @param array $response
      * @return \SpotOnLive\AccuRanker\Models\Domain
      */

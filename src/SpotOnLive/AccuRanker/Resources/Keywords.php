@@ -42,58 +42,62 @@ class Keywords extends AbstractResource implements KeywordsInterface
         return $this->convertResponseToKeyword($response);
     }
 
-    
     /**
-     * Convert response to keyword model
+     * Convert response to keyword
      *
      * @param array $response
      * @return Keyword|null
      */
     private function convertResponseToKeyword(array $response)
     {
-        $keyword = new Keyword(
-            $response['id'],
-            $response['domain'],
-            $response['keyword'],
-            $response['location'],
-            $response['search_engine'],
-            $response['ignore_local_results'],
-            DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'),
-            $response['search_locale'],
-            $response['starred'],
-            $response['search_volume'],
-            $response['tags']
-        );
-
-        foreach ($response['history'] as $historyResult) {
-            $rank = new Rank(
-                new DateTime($historyResult['search_date']),
-                $historyResult['rank'],
-                $historyResult['url'],
-                $historyResult['est_traffic'],
-                $historyResult['extra_ranks']
-            );
-            
-            $keyword->addHistory($rank);
-        }
+        $keyword = new Keyword();
         
+        $keyword->setId($response['id']);
+        $keyword->setDomain($response['domain']);
+        $keyword->setKeyword($response['keyword']);
+        $keyword->setLocation($response['location']);
+        $keyword->setSearchEngine($response['search_engine']);
+        $keyword->setIgnoreLocalResults($response['ignore_local_results']);
+        $keyword->setCreatedAt(DateTime::createFromFormat('Y-m-d His', $response['created_at'] . ' 00000'));
+        $keyword->setSearchLocale($response['search_locale']);
+        $keyword->setStarred($response['starred']);
+        $keyword->setTags($response['tags']);
+        $keyword->setSearchVolume($response['search_volume']);
         
         // Rank
-        if (isset($response['rank']) && !empty($response['rank'])) {
-            $data = $response['rank'];
-            
-            $rank = new Rank(
-                new DateTime($data['search_date']),
-                $data['rank'],
-                $data['url'],
-                $data['est_traffic'],
-                $data['extra_ranks']
-            );
-            
-            $keyword->setRank($rank);
+        
+        if (isset($response['rank'])) {
+            $keyword->setRank($this->convertResponseToRank($response['rank']));
         }
 
+        // Load history
+
+        if (isset($response['history'])) {
+            foreach ($response['history'] as $historyResult) {
+                $keyword->addHistory($this->convertResponseToRank($historyResult));
+            }
+        }
+        
         return $keyword;
+    }
+
+    /**
+     * Convert array response to rank
+     *
+     * @param array $response
+     * @return Rank
+     */
+    private function convertResponseToRank(array $response)
+    {
+        $rank = new Rank();
+
+        $rank->setSearchDate(new DateTime($response['search_date']));
+        $rank->setRank($response['rank']);
+        $rank->setUrl($response['url']);
+        $rank->setEstTraffic($response['est_traffic']);
+        $rank->setExtraRanks($response['extra_ranks']);
+
+        return $rank;
     }
 
     /**

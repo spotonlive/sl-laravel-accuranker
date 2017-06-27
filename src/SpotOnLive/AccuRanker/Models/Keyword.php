@@ -45,53 +45,6 @@ class Keyword
     /** @var Rank[]|array */
     protected $history;
 
-    
-    /**
-     * Keyword constructor.
-     * @param int $id
-     * @param int $domain
-     * @param string $keyword
-     * @param string $location
-     * @param int $searchEngine
-     * @param bool $ignoreLocalResults
-     * @param $createdAt
-     * @param int $searchLocale
-     * @param bool $starred
-     * @param int $searchVolume
-     * @param array $tags
-     * @param Rank|null $rank
-     * @param array|Rank[] $history
-     */
-    public function __construct(
-        $id,
-        $domain,
-        $keyword,
-        $location,
-        $searchEngine,
-        $ignoreLocalResults,
-        $createdAt,
-        $searchLocale,
-        $starred,
-        $searchVolume,
-        array $tags = null,
-        Rank $rank = null,
-        array $history = []
-    ) {
-        $this->id = $id;
-        $this->domain = $domain;
-        $this->keyword = $keyword;
-        $this->location = $location;
-        $this->searchEngine = $searchEngine;
-        $this->ignoreLocalResults = $ignoreLocalResults;
-        $this->createdAt = ($createdAt instanceof DateTime) ? $createdAt : new DateTime($createdAt);
-        $this->searchLocale = $searchLocale;
-        $this->starred = $starred;
-        $this->tags = (is_array($tags)) ? $tags : [];
-        $this->searchVolume = $searchVolume;
-        $this->rank = $rank;
-        $this->history = $history;
-    }
-
     /**
      * @return int
      */

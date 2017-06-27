@@ -59,7 +59,6 @@ class AccuRanker
         return new Domain($this);
     }
 
-
     /**
      * Call the CURL get service
      *
